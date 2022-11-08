@@ -14,108 +14,76 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-public class Int1 extends javax.swing.JFrame {
+public class ApplicantPage extends javax.swing.JFrame {
 
     /**
      * Creates new form Int1
      */
-    public Int1() {
+    public ApplicantPage() {
         initComponents();
         Connect();
         table_update();
-        
+
     }
     Connection con;
-    PreparedStatement pst ;
-    public void Connect()
-    {
+    PreparedStatement pst;
+
+    public void Connect() {
         String fname = fnametxt.getText();
         String lname = fnametxt.getText();
         String city = fnametxt.getText();
         String mobile = fnametxt.getText();
         String salary = fnametxt.getText();
 
-    try {
+        try {
             Class.forName("com.mysql.jdbc.Driver"); // Register the mysql driver
-            con = DriverManager.getConnection("jdbc:mysql://localhost/jobportal","root",""); 
+            con = DriverManager.getConnection("jdbc:mysql://localhost/jobportal", "root", "");
             System.out.println("connect");
             pst = con.prepareStatement("insert into records(fname,lname,city,phone,salary)values(?,?,?,?,?)");
-            pst.setString(1,fname);
-            pst.setString(2,lname);
-            pst.setString(3,city);
-            pst.setString(4,mobile);
-            pst.setString(5,salary);
+            pst.setString(1, fname);
+            pst.setString(2, lname);
+            pst.setString(3, city);
+            pst.setString(4, mobile);
+            pst.setString(5, salary);
             pst.executeQuery();
         } catch (ClassNotFoundException | SQLException ex) {
-            
-        } 
+
+        }
     }
-    
-    private void table_update()
-    {
+
+    private void table_update() {
         int CC;
-        try{
+        try {
             pst = con.prepareStatement("Select * FROM records");
             ResultSet Rs = pst.executeQuery();
-            
+
             ResultSetMetaData RSMD = Rs.getMetaData();
             CC = RSMD.getColumnCount();
             DefaultTableModel DFT = (DefaultTableModel) jTable1.getModel();
             DFT.setRowCount(0);
-            
-            while (Rs.next()){
+
+            while (Rs.next()) {
                 Vector v2 = new Vector();
-                
-                
-              for(int ii = 1; ii<= CC; ii++){
-                  v2.add(Rs.getString("id"));
-                  v2.add(Rs.getString("fname"));
-                  v2.add(Rs.getString("lname"));
-                  v2.add(Rs.getString("phone"));
-                   v2.add(Rs.getString("salary"));
-             
-              v2.add(Rs.getString("city"));
-              
-              }
-              DFT.addRow(v2);
-              }
-           
+
+                for (int ii = 1; ii <= CC; ii++) {
+                    v2.add(Rs.getString("id"));
+                    v2.add(Rs.getString("fname"));
+                    v2.add(Rs.getString("lname"));
+                    v2.add(Rs.getString("city"));
+                    v2.add(Rs.getString("phone"));
+                    v2.add(Rs.getString("salary"));
+
+            
+
+                }
+                DFT.addRow(v2);
+            }
+
         } catch (SQLException ex) {
-            Logger.getLogger(Int1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ApplicantPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,7 +117,7 @@ public class Int1 extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel1.setText("     Employee Information System");
+        jLabel1.setText("     Applicant Information System");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -336,161 +304,119 @@ public class Int1 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            String fname,lname,city,phone,salary;
+            String fname, lname, city, phone, salary;
             fname = fnametxt.getText();
             lname = lnametxt.getText();
             city = citytxt.getText();
             phone = mobiletxt.getText();
             salary = salarytxt.getText();
             pst = con.prepareStatement("insert into records(fname,lname,city,phone,salary)values(?,?,?,?,?)");
-            
-            pst.setString(1,fname);
-            pst.setString(2,lname);
-            pst.setString(3,city);
-            pst.setString(4,phone);
-            pst.setString(5,salary);
-            
+
+            pst.setString(1, fname);
+            pst.setString(2, lname);
+            pst.setString(3, city);
+            pst.setString(4, phone);
+            pst.setString(5, salary);
+
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this,"Record Saved");
-            
+            JOptionPane.showMessageDialog(this, "Record Saved");
+
             fnametxt.setText("");
             lnametxt.setText("");
             citytxt.setText("");
             mobiletxt.setText("");
             salarytxt.setText("");
-            
-            
-            
+
         } catch (SQLException ex) {
-            
-            Logger.getLogger(Int1.class.getName()).log(Level.SEVERE, null, ex);
-            
+
+            Logger.getLogger(ApplicantPage.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-         table_update();
+        table_update();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-try {
-     DefaultTableModel model = (DefaultTableModel)  jTable1.getModel();
-       int selectedIndex = jTable1.getSelectedRow();
-       
-       
-       int id = Integer.parseInt(model.getValueAt(selectedIndex, 0). toString());
-    
-    
-    
-    
-    
- 
-            String fname,lname,city,phone,salary;
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int selectedIndex = jTable1.getSelectedRow();
+
+            int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+
+            String fname, lname, city, phone, salary;
             fname = fnametxt.getText();
             lname = lnametxt.getText();
             city = citytxt.getText();
             phone = mobiletxt.getText();
             salary = salarytxt.getText();
-            pst = con.prepareStatement("update records set fname=?,lname=?,city=?,phone=?,salary=? where id =?)");
-            pst.setString(1,fname);
-            pst.setString(2,lname);
-            pst.setString(3,city);
-            pst.setString(4,phone);
-            pst.setString(5,salary);
+          
+            pst = con.prepareStatement("update records set fname=?,lname=?,city=?,phone=?,salary=? where id =?");
+            pst.setString(1, fname);
+            pst.setString(2, lname);
+            pst.setString(3, city);
+            pst.setString(4, phone);
+            pst.setString(5, salary);
             pst.setInt(6,id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this,"Record Updated");
-            
+            JOptionPane.showMessageDialog(this, "Record Updated");
+
             fnametxt.setText("");
             lnametxt.setText("");
             citytxt.setText("");
             mobiletxt.setText("");
             salarytxt.setText("");
-            
-            
-            
+
         } catch (SQLException ex) {
-            
-            Logger.getLogger(Int1.class.getName()).log(Level.SEVERE, null, ex);
-            
+
+            Logger.getLogger(ApplicantPage.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         // TODO add your handling code here:
-         table_update();
+        table_update();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         try {
-     DefaultTableModel model = (DefaultTableModel)  jTable1.getModel();
-       int selectedIndex = jTable1.getSelectedRow();
-       
-       
-       int id = Integer.parseInt(model.getValueAt(selectedIndex, 0). toString());
-    
-    
-    
-    
-    
- 
-        
-            pst = con.prepareStatement("delete from record where id = ?");
-           
-            pst.setInt(6,id);
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int selectedIndex = jTable1.getSelectedRow();
+
+            int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+
+            pst = con.prepareStatement("delete from records where id = ?");
+
+            pst.setInt(1, id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this,"Record Deleted");
-            
+            JOptionPane.showMessageDialog(this, "Record Deleted");
+
             fnametxt.setText("");
             lnametxt.setText("");
             citytxt.setText("");
             mobiletxt.setText("");
             salarytxt.setText("");
-            
-            
-            
+
         } catch (SQLException ex) {
-            
-            Logger.getLogger(Int1.class.getName()).log(Level.SEVERE, null, ex);
-            
+
+            Logger.getLogger(ApplicantPage.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-         table_update();
+
+        table_update();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-       DefaultTableModel model = (DefaultTableModel)  jTable1.getModel();
-       int selectedIndex = jTable1.getSelectedRow();
-       
-       
-       int id = Integer.parseInt(model.getValueAt(selectedIndex, 0). toString());
-       fnametxt.setText(model.getValueAt(selectedIndex, 1)toString());
-      lnametxt.setText(model.getValueAt(selectedIndex, 2)toString()); NORMAL))
-      citytxt.setText(model.getValueAt(selectedIndex, 3)toString()); NORMAL))
-      mobiletxt.setText(model.getValueAt(selectedIndex, 4)toString()); NORMAL))
-      salarytxt.setText(model.getValueAt(selectedIndex, 5)toString()); NORMAL)) 
-        
-        
-        
-        
-        
-        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+
+        int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+        fnametxt.setText(model.getValueAt(selectedIndex, 1).toString());
+        lnametxt.setText(model.getValueAt(selectedIndex, 2).toString());
+        citytxt.setText(model.getValueAt(selectedIndex, 3).toString());
+        mobiletxt.setText(model.getValueAt(selectedIndex, 4).toString());
+        salarytxt.setText(model.getValueAt(selectedIndex, 5).toString());
+
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**
@@ -510,20 +436,23 @@ try {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Int1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ApplicantPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Int1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ApplicantPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Int1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ApplicantPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Int1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ApplicantPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Int1().setVisible(true);
+                new ApplicantPage().setVisible(true);
             }
         });
     }
